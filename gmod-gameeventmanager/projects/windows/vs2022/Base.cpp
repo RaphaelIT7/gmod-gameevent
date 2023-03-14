@@ -51,27 +51,6 @@ GMOD_MODULE_OPEN()
 	Start_Table();
 		Add_Func(Listen, "Listen");
 	Finish_Table("gameevent");
-	
-	gameeventmanager->AddListener(new CustomGameEventListener, "OnRequestFullUpdate", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "host_quit", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "client_fullconnect", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "client_connected", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "client_beginconnect", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "client_disconnect", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "player_say", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "player_activate", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "player_disconnect", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "player_info", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "player_connect_client", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "player_connect", false);
-
-	gameeventmanager->AddListener(new CustomGameEventListener, "player_death", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "player_hurt_ex", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "achievement_earned", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "achievement_event", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "show_freezepanel", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "hide_freezepanel", false);
-	gameeventmanager->AddListener(new CustomGameEventListener, "freezecam_started", false);
 
 	LuaPrint("Worked");
 
