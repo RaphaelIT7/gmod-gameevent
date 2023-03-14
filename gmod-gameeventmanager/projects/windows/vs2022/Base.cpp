@@ -52,7 +52,7 @@ GMOD_MODULE_OPEN()
 		Add_Func(Listen, "Listen");
 	Finish_Table("gameevent");
 
-	LuaPrint("Worked");
+	LuaPrint("[GameEventManager] Added gameevent.Listen");
 
 	return 0;
 }

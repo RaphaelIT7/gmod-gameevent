@@ -29,25 +29,6 @@ void Finish_Table(std::string Name) {
 	GlobalLUA->Pop();
 }
 
-// should never be used outside of the main thread
-void Call_Func(std::string func) {
-	GlobalLUA->PushSpecial(SPECIAL_GLOB);
-	GlobalLUA->GetField(-1, func.c_str());
-	GlobalLUA->Call(0, 0);
-}
-
-// should never be used outside of the main thread
-void Call_Func(char* func) {
-	GlobalLUA->PushSpecial(SPECIAL_GLOB);
-	GlobalLUA->GetField(-1, func);
-	GlobalLUA->Call(0, 0);
-}
-
-
-/*
-	All Print functions.
-*/
-
 // should never be used outside of main thread!!! what happends: memory access violation
 void LuaPrint(char* Text) {
 	GlobalLUA->PushSpecial(SPECIAL_GLOB);
@@ -62,20 +43,4 @@ void LuaPrint(std::string Text) {
 	GlobalLUA->GetField(-1, "print");
 	GlobalLUA->PushString(("[MG Module] " + Text).c_str());
 	GlobalLUA->Call(1, 0);
-}
-
-void DeveloperPrint(char* Text) {
-	ConDMsg(("[MG Module] " + (std::string)Text + "\n").c_str());
-}
-
-void DeveloperPrint(std::string Text) {
-	ConDMsg(("[MG Module] " + Text + "\n").c_str());
-}
-
-void ConsolePrint(char* Text) {
-	ConMsg(("[MG Module] " + (std::string)Text + "\n").c_str());
-}
-
-void ConsolePrint(std::string Text) {
-	ConMsg(("[MG Module] " + Text + "\n").c_str());
 }
