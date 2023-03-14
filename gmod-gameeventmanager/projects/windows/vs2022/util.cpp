@@ -33,7 +33,7 @@ void Finish_Table(std::string Name) {
 void LuaPrint(char* Text) {
 	GlobalLUA->PushSpecial(SPECIAL_GLOB);
 	GlobalLUA->GetField(-1, "print");
-	GlobalLUA->PushString(("[MG Module] " + (std::string)Text).c_str());
+	GlobalLUA->PushString(Text);
 	GlobalLUA->Call(1, 0);
 }
 
@@ -41,6 +41,6 @@ void LuaPrint(char* Text) {
 void LuaPrint(std::string Text) {
 	GlobalLUA->PushSpecial(SPECIAL_GLOB);
 	GlobalLUA->GetField(-1, "print");
-	GlobalLUA->PushString(("[MG Module] " + Text).c_str());
+	GlobalLUA->PushString(Text.c_str());
 	GlobalLUA->Call(1, 0);
 }
