@@ -1,4 +1,4 @@
-This Project adds [gameevent.Listen](https://wiki.facepunch.com/gmod/gameevent.Listen) to the Menu State.  
+This Project adds [gameevent.Listen](https://wiki.facepunch.com/gmod/gameevent.Listen) to the Menu State. Currently, only the main branch of Gmod is supported.  
 Current Progress:  
 - gameevent.Listen works.  
 - The hook gets called with the data.
