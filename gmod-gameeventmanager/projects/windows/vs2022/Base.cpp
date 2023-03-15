@@ -25,13 +25,9 @@ public:
 		GlobalLUA->GetField(-1, "hook");
 		GlobalLUA->GetField(-1, "Run");
 			GlobalLUA->PushString(event->GetName());
-			GlobalLUA->CreateTable();
-			GlobalLUA->PushString("Hello World");
-			GlobalLUA->SetField(-2, "Test");
-			GlobalLUA->SetField(-2, "Baum");
-			GlobalLUA->Pop();
-		GlobalLUA->Call(2, 0);
-		GlobalLUA->Pop(3);
+
+		GlobalLUA->Call(1, 0);
+		GlobalLUA->Pop(2);
 	}
 };
 
