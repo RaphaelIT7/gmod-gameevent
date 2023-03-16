@@ -77,7 +77,7 @@ public:
 		else if (strcmp(EventName, "client_connected") == 0) {
 			GlobalLUA->PushString(event->GetString("address"));
 			GlobalLUA->SetField(-2, "address");
-			GlobalLUA->PushString(event->GetString("ip"));
+			GlobalLUA->PushNumber(event->GetInt("ip"));
 			GlobalLUA->SetField(-2, "ip");
 			GlobalLUA->PushNumber(event->GetInt("port"));
 			GlobalLUA->SetField(-2, "port");
