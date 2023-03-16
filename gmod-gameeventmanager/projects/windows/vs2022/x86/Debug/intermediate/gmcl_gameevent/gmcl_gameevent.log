@@ -1,5 +1,4 @@
 ﻿  Base.cpp
 C:\Users\rapha\Documents\GitHub\gmod-gameeventmanager\gmod-gameeventmanager\projects\windows\vs2022\Base.cpp(9,47): warning C4211: Nicht dem Standard entsprechende Erweiterung: Neudefinition von extern als statisch
-C:\Users\rapha\Documents\GitHub\gmod-gameeventmanager\gmod-gameeventmanager\projects\windows\vs2022\Base.cpp(18,15): warning C4189: "EventName": Lokale Variable ist initialisiert aber nicht referenziert
-C:\Users\rapha\Documents\GitHub\gmod-gameeventmanager\gmod-gameeventmanager\projects\windows\vs2022\Base.cpp(55,1): warning C4100: "LUA": Unreferenzierter formaler Parameter
+C:\Users\rapha\Documents\GitHub\gmod-gameeventmanager\gmod-gameeventmanager\projects\windows\vs2022\Base.cpp(270,1): warning C4100: "LUA": Unreferenzierter formaler Parameter
   gmcl_gameevent.vcxproj -> C:\Users\rapha\Documents\GitHub\gmod-gameeventmanager\gmod-gameeventmanager\projects\windows\vs2022\x86\Debug\gmcl_gameevent_win32.dll

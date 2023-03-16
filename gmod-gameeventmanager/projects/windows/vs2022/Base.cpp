@@ -64,6 +64,24 @@ public:
 			GlobalLUA->PushString(event->GetString("message"));
 			GlobalLUA->SetField(-2, "message");
 		}
+		else if (strcmp(EventName, "client_beginconnect") == 0) {
+			GlobalLUA->PushString(event->GetString("address"));
+			GlobalLUA->SetField(-2, "address");
+			GlobalLUA->PushNumber(event->GetInt("ip"));
+			GlobalLUA->SetField(-2, "ip");
+			GlobalLUA->PushNumber(event->GetInt("port"));
+			GlobalLUA->SetField(-2, "port");
+			GlobalLUA->PushString(event->GetString("source"));
+			GlobalLUA->SetField(-2, "source");
+		}
+		else if (strcmp(EventName, "client_connected") == 0) {
+			GlobalLUA->PushString(event->GetString("address"));
+			GlobalLUA->SetField(-2, "address");
+			GlobalLUA->PushString(event->GetString("ip"));
+			GlobalLUA->SetField(-2, "ip");
+			GlobalLUA->PushNumber(event->GetInt("port"));
+			GlobalLUA->SetField(-2, "port");
+		}
 		else if (strcmp(EventName, "entity_killed") == 0) {
 			GlobalLUA->PushNumber(event->GetInt("entindex_inflictor"));
 			GlobalLUA->SetField(-2, "entindex_inflictor");
@@ -195,6 +213,28 @@ public:
 			GlobalLUA->SetField(-2, "ip");
 			GlobalLUA->PushString(event->GetString("by"));
 			GlobalLUA->SetField(-2, "by");
+		}
+		else if (strcmp(EventName, "server_spawn") == 0) {
+			GlobalLUA->PushString(event->GetString("hostname"));
+			GlobalLUA->SetField(-2, "hostname");
+			GlobalLUA->PushString(event->GetString("address"));
+			GlobalLUA->SetField(-2, "address");
+			GlobalLUA->PushNumber(event->GetInt("ip"));
+			GlobalLUA->SetField(-2, "ip");
+			GlobalLUA->PushNumber(event->GetInt("port"));
+			GlobalLUA->SetField(-2, "port");
+			GlobalLUA->PushString(event->GetString("game"));
+			GlobalLUA->SetField(-2, "game");
+			GlobalLUA->PushString(event->GetString("mapname"));
+			GlobalLUA->SetField(-2, "mapname");
+			GlobalLUA->PushNumber(event->GetInt("maxplayers"));
+			GlobalLUA->SetField(-2, "maxplayers");
+			GlobalLUA->PushString(event->GetString("os"));
+			GlobalLUA->SetField(-2, "os");
+			GlobalLUA->PushBool(event->GetBool("dedicated"));
+			GlobalLUA->SetField(-2, "dedicated");
+			GlobalLUA->PushBool(event->GetBool("password"));
+			GlobalLUA->SetField(-2, "password");
 		}
 
 		GlobalLUA->Call(2, 0);
