@@ -242,11 +242,13 @@ public:
 	}
 };
 
+static CustomGameEventListener* EventListener = new CustomGameEventListener;
+
 LUA_FUNCTION_STATIC(Listen) {
 	const char* name = LUA->CheckString(1);
-	//Msg(name); 
-	//Msg("\n");
-	gameeventmanager->AddListener(new CustomGameEventListener, name, false);
+	if (!gameeventmanager->FindListener(EventListener, name)) {
+		gameeventmanager->AddListener(EventListener, name, false);
+	}
 
 	return 1;
 }
