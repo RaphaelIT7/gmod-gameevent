@@ -1,2 +1,0 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1096,5): error MSB6006: "link.exe" wurde mit dem Code 1104 beendet.
-LINK : fatal error LNK1104: Datei "C:\Users\rapha\Documents\GitHub\gmod-gameeventmanager\gmod-gameeventmanager\projects\windows\vs2022\x64\Debug\tier1.lib" kann nicht geöffnet werden.

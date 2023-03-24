@@ -258,7 +258,7 @@ GMOD_MODULE_OPEN()
 	GlobalLUA = LUA;
 	gameeventmanager = (IGameEventManager2*)engine_loader.GetFactory()(INTERFACEVERSION_GAMEEVENTSMANAGER2, nullptr);
 	if (gameeventmanager == nullptr)
-		LUA->ThrowError("unable to initialize IVEngineClient");
+		LUA->ThrowError("unable to initialize IGameEventManager2");
 
 	Start_Table();
 		Add_Func(Listen, "Listen");
