@@ -6,8 +6,6 @@
 
 static SourceSDK::FactoryLoader engine_loader("engine");
 
-static IGameEventManager2* gameeventmanager = nullptr;
-
 class CustomGameEventListener : public IGameEventListener2
 {
 public:
@@ -261,8 +259,8 @@ GMOD_MODULE_OPEN()
 		LUA->ThrowError("unable to initialize IGameEventManager2");
 
 	Start_Table();
-		Add_Func(Listen, "Listen");
-	Finish_Table("gameevent");
+		Add_Func(Listen, (char*)"Listen");
+	Finish_Table((char*)"gameevent");
 
 	LuaPrint((char*)"[GameEventManager] Added gameevent.Listen");
 
