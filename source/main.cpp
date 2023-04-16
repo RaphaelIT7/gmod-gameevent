@@ -6,6 +6,8 @@
 
 static SourceSDK::FactoryLoader engine_loader("engine");
 
+static IGameEventManager2* eventmanager = nullptr;
+
 class CustomGameEventListener : public IGameEventListener2
 {
 public:
@@ -244,8 +246,8 @@ static CustomGameEventListener* EventListener = new CustomGameEventListener;
 
 LUA_FUNCTION_STATIC(Listen) {
 	const char* name = LUA->CheckString(1);
-	if (!gameeventmanager->FindListener(EventListener, name)) {
-		gameeventmanager->AddListener(EventListener, name, false);
+	if (!eventmanager->FindListener(EventListener, name)) {
+		eventmanager->AddListener(EventListener, name, false);
 	}
 
 	return 1;
@@ -254,8 +256,8 @@ LUA_FUNCTION_STATIC(Listen) {
 GMOD_MODULE_OPEN()
 {
 	GlobalLUA = LUA;
-	gameeventmanager = (IGameEventManager2*)engine_loader.GetFactory()(INTERFACEVERSION_GAMEEVENTSMANAGER2, nullptr);
-	if (gameeventmanager == nullptr)
+	eventmanager = (IGameEventManager2*)engine_loader.GetFactory()(INTERFACEVERSION_GAMEEVENTSMANAGER2, nullptr);
+	if (eventmanager == nullptr)
 		LUA->ThrowError("unable to initialize IGameEventManager2");
 
 	Start_Table();
