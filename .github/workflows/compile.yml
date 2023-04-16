@@ -3,7 +3,7 @@ name: Build
 on: [push, pull_request, workflow_dispatch]
   
 env:
-  PROJECT_NAME: "clearcache"
+  PROJECT_NAME: "gameevent"
   BUILD_64x: "false"
   REALM: "cl"
   FINAL_REALM: "sv"
