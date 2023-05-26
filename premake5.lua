@@ -40,7 +40,7 @@ CreateWorkspace({name = "gameevent", abi_compatible = false})
             files({"source/posix/*.cpp", "source/posix/*.hpp"})
                 filter "system:linux"
 
-                links // this fixes the undefined reference to `dlopen' errors.
+                links -- This fixes the undefined reference to `dlopen' errors.
                 {
                     "dl",
                 }
