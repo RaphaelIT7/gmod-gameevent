@@ -1,4 +1,4 @@
-This Project adds [gameevent.Listen](https://wiki.facepunch.com/gmod/gameevent.Listen) to the Menu State. Currently, only the main branch of Gmod is supported.  
+This Project adds [gameevent.Listen](https://wiki.facepunch.com/gmod/gameevent.Listen) to the Menu State.  
 With this module, you also get access to the [client_beginconnect](https://wiki.facepunch.com/gmod/gameevent/client_beginconnect), [client_connect](https://wiki.facepunch.com/gmod/gameevent/client_connected) and [server_spawn](https://wiki.facepunch.com/gmod/gameevent/server_spawn) gameevents.  
 
 Note: This Project uses [Garry's Mod Common](https://github.com/danielga/garrysmod_common)
