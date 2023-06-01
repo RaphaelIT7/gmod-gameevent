@@ -36,15 +36,16 @@ jobs:
     - name: Generate Project
       run: |
         premake5 --gmcommon=garrysmod_common gmake
-        cd projects/linux/gmake
 
     - name: Make
       run: |
+        cd projects/linux/gmake
         make
 
     - name: Make 64x
       if: env.BUILD_64x == 'true'
       run: |
+        cd projects/linux/gmake
         make config=releasewithsymbols_x86_64
 
     - uses: actions/upload-artifact@v2
