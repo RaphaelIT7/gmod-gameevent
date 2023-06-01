@@ -9,7 +9,7 @@ void Start_Table() {
 	GlobalLUA->CreateTable();
 }
 
-void Add_Func(CFunc Func, char* Name) {
+void Add_Func(CFunc Func, const char* Name) {
 	GlobalLUA->PushCFunction(Func);
 	GlobalLUA->SetField(-2, Name);
 }
@@ -19,7 +19,7 @@ void Add_Func(CFunc Func, std::string Name) {
 	GlobalLUA->SetField(-2, Name.c_str());
 }
 
-void Finish_Table(char* Name) {
+void Finish_Table(const char* Name) {
 	GlobalLUA->SetField(-2, Name);
 	GlobalLUA->Pop();
 }
@@ -30,7 +30,7 @@ void Finish_Table(std::string Name) {
 }
 
 // should never be used outside of main thread!!! what happends: memory access violation
-void LuaPrint(char* Text) {
+void LuaPrint(const char* Text) {
 	GlobalLUA->PushSpecial(SPECIAL_GLOB);
 	GlobalLUA->GetField(-1, "print");
 	GlobalLUA->PushString(Text);
