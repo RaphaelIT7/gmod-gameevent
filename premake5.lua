@@ -34,7 +34,7 @@ CreateWorkspace({name = "gameevent", abi_compatible = false})
         --IncludeScanning()
 
         filter("system:windows")
-            files({"source/win32/*.cpp", "source/win32/*.hpp"})
+            links("ws2_32")
 
         filter("system:linux or macosx")
             files({"source/posix/*.cpp", "source/posix/*.hpp"})
