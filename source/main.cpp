@@ -261,10 +261,10 @@ GMOD_MODULE_OPEN()
 		LUA->ThrowError("unable to initialize IGameEventManager2");
 
 	Start_Table();
-		Add_Func(Listen, (char*)"Listen");
-	Finish_Table((char*)"gameevent");
+		Add_Func(Listen, "Listen");
+	Finish_Table("gameevent");
 
-	LuaPrint((char*)"[GameEventManager] Added gameevent.Listen");
+	LuaPrint("[GameEventManager] Added gameevent.Listen");
 
 	return 0;
 }
