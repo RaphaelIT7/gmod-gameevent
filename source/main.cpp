@@ -157,7 +157,7 @@ GMOD_MODULE_OPEN()
 		LUA->ThrowError("unable to read resource/serverevents.res!");
 
 	pGameEvents = new KeyValues("");
-	if (!pGameEvents->LoadFromBuffer("resource/serverevents.res", buf.String()))
+	if (!pGameEvents->LoadFromBuffer("resource/serverevents.res", buf))
 	{
 		pGameEvents->deleteThis();
 		return 0;
@@ -173,7 +173,11 @@ GMOD_MODULE_OPEN()
 		pModGameEvents->deleteThis();
 		return 0;
 	}
+#ifdef ARCHITECTURE_IS_X86
 	pGameEvents->RecursiveMergeKeyValues(pModGameEvents);
+#else
+	pGameEvents->MergeFrom(pModGameEvents, MERGE_KV_ALL);
+#endif
 
 	CUtlBuffer otherbuf;
 	otherbuf.PutString(unlisted_events);
@@ -184,7 +188,11 @@ GMOD_MODULE_OPEN()
 		pOtherGameEvents->deleteThis();
 		return 0;
 	}
+#ifdef ARCHITECTURE_IS_X86
 	pGameEvents->RecursiveMergeKeyValues(pOtherGameEvents);
+#else
+	pGameEvents->MergeFrom(pOtherGameEvents, MERGE_KV_ALL);
+#endif
 
 	Start_Table();
 		Add_Func(Listen, "Listen");
