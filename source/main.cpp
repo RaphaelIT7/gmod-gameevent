@@ -2,7 +2,7 @@
 #include <GarrysMod/FactoryLoader.hpp>
 #include <GarrysMod/Lua/Interface.h>
 #include "GameEventListener.h"
-#include "KeyValues.h"
+#include "keyvalues.h"
 #include "filesystem.h"
 #include "utlbuffer.h"
 #include "util.h"
