@@ -173,7 +173,7 @@ GMOD_MODULE_OPEN()
 		pModGameEvents->deleteThis();
 		return 0;
 	}
-#ifdef ARCHITECTURE_IS_X86
+#ifdef ARCHITECTURE_X86
 	pGameEvents->RecursiveMergeKeyValues(pModGameEvents);
 #else
 	pGameEvents->MergeFrom(pModGameEvents, MERGE_KV_ALL);
@@ -188,7 +188,7 @@ GMOD_MODULE_OPEN()
 		pOtherGameEvents->deleteThis();
 		return 0;
 	}
-#ifdef ARCHITECTURE_IS_X86
+#ifdef ARCHITECTURE_X86
 	pGameEvents->RecursiveMergeKeyValues(pOtherGameEvents);
 #else
 	pGameEvents->MergeFrom(pOtherGameEvents, MERGE_KV_ALL);
