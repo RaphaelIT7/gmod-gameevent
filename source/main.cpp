@@ -2,7 +2,11 @@
 #include <GarrysMod/FactoryLoader.hpp>
 #include <GarrysMod/Lua/Interface.h>
 #include "GameEventListener.h"
+#ifdef ARCHITECTURE_X86
+#include "KeyValues.h"
+#else
 #include "keyvalues.h"
+#endif
 #include "filesystem.h"
 #include "utlbuffer.h"
 #include "util.h"
