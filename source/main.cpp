@@ -176,7 +176,7 @@ GMOD_MODULE_OPEN()
 #ifdef ARCHITECTURE_X86
 	pGameEvents->RecursiveMergeKeyValues(pModGameEvents);
 #else
-	pGameEvents->MergeFrom(pModGameEvents, MERGE_KV_ALL);
+	pGameEvents->MergeFrom(pModGameEvents);
 #endif
 
 	CUtlBuffer otherbuf;
@@ -191,7 +191,7 @@ GMOD_MODULE_OPEN()
 #ifdef ARCHITECTURE_X86
 	pGameEvents->RecursiveMergeKeyValues(pOtherGameEvents);
 #else
-	pGameEvents->MergeFrom(pOtherGameEvents, MERGE_KV_ALL);
+	pGameEvents->MergeFrom(pOtherGameEvents);
 #endif
 
 	Start_Table();
