@@ -3,7 +3,7 @@
 #include <GarrysMod/Lua/Interface.h>
 #include "GameEventListener.h"
 #include "KeyValues.h"
-#include "Filesystem.h"
+#include "filesystem.h"
 #include "utlbuffer.h"
 #include "util.h"
 
@@ -168,7 +168,7 @@ GMOD_MODULE_OPEN()
 		LUA->ThrowError("unable to read resource/modevents.res!");
 
 	KeyValues* pModGameEvents = new KeyValues("");
-	if (!pModGameEvents->LoadFromBuffer("resource/modevents.res", modbuf.String()))
+	if (!pModGameEvents->LoadFromBuffer("resource/modevents.res", modbuf))
 	{
 		pModGameEvents->deleteThis();
 		return 0;
@@ -179,7 +179,7 @@ GMOD_MODULE_OPEN()
 	otherbuf.PutString(unlisted_events);
 
 	KeyValues* pOtherGameEvents = new KeyValues("");
-	if (!pOtherGameEvents->LoadFromBuffer("otherevents", otherbuf.String()))
+	if (!pOtherGameEvents->LoadFromBuffer("otherevents", otherbuf))
 	{
 		pOtherGameEvents->deleteThis();
 		return 0;
