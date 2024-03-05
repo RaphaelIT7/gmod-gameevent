@@ -156,38 +156,58 @@ GMOD_MODULE_OPEN()
 
 	pGameEvents = new KeyValues("resource/serverevents.res");
 
-	CUtlBuffer buf;
-	if (!g_FileSystem->ReadFile("resource/serverevents.res", "GAME", buf))
-		LUA->ThrowError("unable to read resource/serverevents.res!");
-
-	pGameEvents = new KeyValues("");
-	if (!pGameEvents->LoadFromBuffer("resource/serverevents.res", buf))
+	FileHandle_t srv_fh = g_FileSystem->Open("resource/serverevents.res", "r", "GAME");
+	if(srv_fh)
 	{
-		pGameEvents->deleteThis();
-		return 0;
+		int file_len = g_FileSystem->Size(srv_fh);
+		char* ServerEvents = new char[file_len + 1];
+
+		g_FileSystem->Read((void*)ServerEvents, file_len, srv_fh);
+		ServerEvents[file_len] = 0;
+
+		if (!pGameEvents->LoadFromBuffer("resource/serverevents.res", ServerEvents))
+		{
+			pGameEvents->deleteThis();
+			return 0;
+		}
+
+		g_FileSystem->Close(srv_fh);
+
+		delete[] ServerEvents;
+	} else {
+		LUA->ThrowError("Failed to open resource/serverevents.res");
 	}
 
-	CUtlBuffer modbuf;
-	if (!g_FileSystem->ReadFile("resource/modevents.res", "GAME", modbuf))
-		LUA->ThrowError("unable to read resource/modevents.res!");
-
-	KeyValues* pModGameEvents = new KeyValues("");
-	if (!pModGameEvents->LoadFromBuffer("resource/modevents.res", modbuf))
+	FileHandle_t mod_fh = g_FileSystem->Open("resource/modevents.res", "r", "GAME");
+	if(mod_fh)
 	{
-		pModGameEvents->deleteThis();
-		return 0;
-	}
-#ifdef ARCHITECTURE_X86
-	pGameEvents->RecursiveMergeKeyValues(pModGameEvents);
-#else
-	pGameEvents->MergeFrom(pModGameEvents);
-#endif
+		int file_len = g_FileSystem->Size(mod_fh);
+		char* ModEvents = new char[file_len + 1];
 
-	CUtlBuffer otherbuf;
-	otherbuf.PutString(unlisted_events);
+		g_FileSystem->Read((void*)ModEvents, file_len, mod_fh);
+		ModEvents[file_len] = 0;
+
+		KeyValues* pModGameEvents = new KeyValues("");
+		if (!pModGameEvents->LoadFromBuffer("resource/modevents.res", ModEvents))
+		{
+			pModGameEvents->deleteThis();
+			return 0;
+		}
+	#ifdef ARCHITECTURE_X86
+		pGameEvents->RecursiveMergeKeyValues(pModGameEvents);
+	#else
+		pGameEvents->MergeFrom(pModGameEvents);
+	#endif
+
+		g_FileSystem->Close(mod_fh);
+
+		delete[] ModEvents;
+	} else {
+		LUA->ThrowError("Failed to open resource/modevents.res");
+	}
 
 	KeyValues* pOtherGameEvents = new KeyValues("");
-	if (!pOtherGameEvents->LoadFromBuffer("otherevents", otherbuf))
+	if (!pOtherGameEvents->LoadFromBuffer("otherevents", unlisted_events))
 	{
 		pOtherGameEvents->deleteThis();
 		return 0;
