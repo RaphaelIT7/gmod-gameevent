@@ -168,6 +168,7 @@ GMOD_MODULE_OPEN()
 		if (!pGameEvents->LoadFromBuffer("resource/serverevents.res", ServerEvents))
 		{
 			pGameEvents->deleteThis();
+			delete[] ServerEvents;
 			return 0;
 		}
 
@@ -191,6 +192,7 @@ GMOD_MODULE_OPEN()
 		if (!pModGameEvents->LoadFromBuffer("resource/modevents.res", ModEvents))
 		{
 			pModGameEvents->deleteThis();
+			delete[] ModEvents;
 			return 0;
 		}
 	#ifdef ARCHITECTURE_X86
