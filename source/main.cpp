@@ -1,4 +1,3 @@
-#include <GarrysMod/InterfacePointers.hpp>
 #include <GarrysMod/FactoryLoader.hpp>
 #include <GarrysMod/Lua/Interface.h>
 #include "GameEventListener.h"
