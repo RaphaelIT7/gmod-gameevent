@@ -7,37 +7,52 @@
 #else
 #include "keyvalues.h"
 #endif
-#include "filesystem.h"
-#include "utlbuffer.h"
 #include "util.h"
+
+class CGameEventDescriptor;
+class CGameEvent : public IGameEvent
+{
+public:
+
+	CGameEvent( CGameEventDescriptor *descriptor );
+	virtual ~CGameEvent();
+
+	const char *GetName() const;
+	bool  IsEmpty(const char *keyName = NULL);
+	bool  IsLocal() const;
+	bool  IsReliable() const;
+
+	bool  GetBool( const char *keyName = NULL, bool defaultValue = false );
+	int   GetInt( const char *keyName = NULL, int defaultValue = 0 );
+	float GetFloat( const char *keyName = NULL, float defaultValue = 0.0f );
+	const char *GetString( const char *keyName = NULL, const char *defaultValue = "" );
+
+	void SetBool( const char *keyName, bool value );
+	void SetInt( const char *keyName, int value );
+	void SetFloat( const char *keyName, float value );
+	void SetString( const char *keyName, const char *value );
+	
+	CGameEventDescriptor	*m_pDescriptor;
+	KeyValues				*m_pDataKeys;
+};
 
 static SourceSDK::FactoryLoader engine_loader("engine");
 static IGameEventManager2* eventmanager = nullptr;
-IFileSystem* g_FileSystem = nullptr;
-//KeyValues* pModGameEvents = nullptr;
-KeyValues* pGameEvents = nullptr;
-void PushEvent(IGameEvent* event)
+void PushEvent(CGameEvent* event)
 {
-	KeyValues* kv_event = pGameEvents->FindKey(event->GetName());
-	if (!kv_event)
-	{
-		Msg("Invalid Event? (%s)\n", event->GetName());
-		return;
-	}
-
-	KeyValues* subkey = kv_event->GetFirstSubKey();
+	KeyValues* subkey = event->m_pDataKeys->GetFirstSubKey();
 	while (subkey)
 	{
-		const char* type = subkey->GetString();
-		if (V_strcmp(type, "string") == 0)
+		KeyValues::types_t type = subkey->GetDataType();
+		if (type == KeyValues::TYPE_STRING)
 		{
 			GlobalLUA->PushString(event->GetString(subkey->GetName()));
-		} else if (V_strcmp(type, "long") == 0 || V_strcmp(type, "short") == 0 || V_strcmp(type, "byte") == 0)
+		} else if (type == KeyValues::TYPE_UINT64 || type == KeyValues::TYPE_INT)
 		{
 			GlobalLUA->PushNumber(event->GetInt(subkey->GetName()));
-		} else if (V_strcmp(type, "bool") == 0)
+		} else if (type == KeyValues::TYPE_FLOAT)
 		{
-			GlobalLUA->PushBool(event->GetBool(subkey->GetName()));
+			GlobalLUA->PushNumber(event->GetFloat(subkey->GetName()));
 		} else {
 			GlobalLUA->PushNil();
 			Msg("Invalid Type?!? (%s -> %s)\n", event->GetName(), subkey->GetName());
@@ -61,7 +76,7 @@ public:
 		GlobalLUA->GetField(-1, "Run");
 		GlobalLUA->PushString(event->GetName());
 		GlobalLUA->CreateTable();
-		PushEvent(event);
+		PushEvent((CGameEvent*)event);
 
 		GlobalLUA->Call(2, 0);
 		GlobalLUA->Pop(2);
@@ -75,150 +90,16 @@ LUA_FUNCTION_STATIC(Listen) {
 	if (!eventmanager->FindListener(EventListener, name)) {
 		eventmanager->AddListener(EventListener, name, false);
 	}
-
-	KeyValues* kv_event = pGameEvents->FindKey(name);
-	if (!kv_event)
-	{
-		Msg("Invalid Event? (%s)\n", name);
-		return 0;
-	}
-
+ 
 	return 0;
 }
 
-const char* unlisted_events = R"V0G0N(
-"otherevents"
-{
-	"break_breakable"
-	{
-		"entindex"	"short"
-		"userid"	"byte"
-		"material"	"long"
-	}
-
-	"break_prop"
-	{
-		"entindex"	"short"
-		"userid"	"byte"
-	}
-
-	"entity_killed"
-	{
-		"entindex_inflictor"	"short"
-		"entindex_attacker"		"short"
-		"damagebits"			"short"
-		"entindex_killed"		"byte"
-	}
-
-	"flare_ignite_npc"
-	{
-		"entindex"	"short"
-	}
-
-	"player_changename"
-	{
-		"userid"	"byte"
-		"oldname"	"string"
-		"newname"	"string"
-	}
-
-	"player_hurt"
-	{
-		"userid"	"byte"
-		"health"	"short"
-		"attacker"	"byte"
-	}
-
-	"player_spawn"
-	{
-		"userid"	"byte"
-	}
-
-	"ragdoll_dissolved"
-	{
-		"entindex"	"short"
-	}
-
-	"game_newmap"
-	{
-		"mapname"	"string"
-	}
-}
-)V0G0N";
 GMOD_MODULE_OPEN()
 {
 	GlobalLUA = LUA;
 	eventmanager = (IGameEventManager2*)engine_loader.GetFactory()(INTERFACEVERSION_GAMEEVENTSMANAGER2, nullptr);
 	if (eventmanager == nullptr)
 		LUA->ThrowError("unable to initialize IGameEventManager2");
-
-	g_FileSystem = InterfacePointers::FileSystem();
-
-	pGameEvents = new KeyValues("resource/serverevents.res");
-
-	FileHandle_t srv_fh = g_FileSystem->Open("resource/serverevents.res", "r", "GAME");
-	if(srv_fh)
-	{
-		int file_len = g_FileSystem->Size(srv_fh);
-		char* ServerEvents = new char[file_len + 1];
-
-		g_FileSystem->Read((void*)ServerEvents, file_len, srv_fh);
-		ServerEvents[file_len] = 0;
-
-		if (!pGameEvents->LoadFromBuffer("resource/serverevents.res", ServerEvents))
-		{
-			pGameEvents->deleteThis();
-			delete[] ServerEvents;
-			return 0;
-		}
-
-		g_FileSystem->Close(srv_fh);
-
-		delete[] ServerEvents;
-	} else {
-		LUA->ThrowError("Failed to open resource/serverevents.res");
-	}
-
-	FileHandle_t mod_fh = g_FileSystem->Open("resource/modevents.res", "r", "GAME");
-	if(mod_fh)
-	{
-		int file_len = g_FileSystem->Size(mod_fh);
-		char* ModEvents = new char[file_len + 1];
-
-		g_FileSystem->Read((void*)ModEvents, file_len, mod_fh);
-		ModEvents[file_len] = 0;
-
-		KeyValues* pModGameEvents = new KeyValues("");
-		if (!pModGameEvents->LoadFromBuffer("resource/modevents.res", ModEvents))
-		{
-			pModGameEvents->deleteThis();
-			delete[] ModEvents;
-			return 0;
-		}
-	#ifdef ARCHITECTURE_X86
-		pGameEvents->RecursiveMergeKeyValues(pModGameEvents);
-	#else
-		pGameEvents->MergeFrom(pModGameEvents);
-	#endif
-
-		g_FileSystem->Close(mod_fh);
-
-		delete[] ModEvents;
-	} else {
-		LUA->ThrowError("Failed to open resource/modevents.res");
-	}
-
-	KeyValues* pOtherGameEvents = new KeyValues("");
-	if (!pOtherGameEvents->LoadFromBuffer("otherevents", unlisted_events))
-	{
-		pOtherGameEvents->deleteThis();
-		return 0;
-	}
-#ifdef ARCHITECTURE_X86
-	pGameEvents->RecursiveMergeKeyValues(pOtherGameEvents);
-#else
-	pGameEvents->MergeFrom(pOtherGameEvents);
-#endif
 
 	Start_Table();
 		Add_Func(Listen, "Listen");
@@ -231,8 +112,7 @@ GMOD_MODULE_OPEN()
 
 GMOD_MODULE_CLOSE()
 {
-	//delete pGameEvents;
-	//delete pModGameEvents;
+	eventmanager->RemoveListener(EventListener);
 
 	return 0;
 }
